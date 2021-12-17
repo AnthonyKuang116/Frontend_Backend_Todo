@@ -1,0 +1,16 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.nav-element {
+    display: flex;
+    justify-content: right;
+}
+
+.nav-buttons {
+    text-decoration: none;
+    border: none;
+    font-weight: bold;
+}
