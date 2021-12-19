@@ -4,12 +4,23 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import ".././css/index.css"
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Header = ({ loggedIn, setLoggedIn }) => {
+  const navigate = useNavigate();
+
   const handleSignOut = (e) => {
     e.preventDefault();
     setLoggedIn(false);
+    navigate("/")
+  }
+
+  const handleLogin = () => {
+    navigate("/login")
+  }
+
+  const handleSignUp = () => {
+    navigate('/signup')
   }
 
   return (
@@ -18,11 +29,11 @@ const Header = ({ loggedIn, setLoggedIn }) => {
         <Toolbar className="nav-element">
           {loggedIn === false ?
             <>
-              <NavLink to="/"><Button color="inherit">Login</Button></NavLink>
-              <NavLink to="signup"><Button className="nav-buttons"color="inherit">Sign Up</Button></NavLink>
+              <Button color="inherit" onClick={handleLogin}>Login</Button>
+              <Button className="nav-buttons" color="inherit" onClick={handleSignUp}>Sign Up</Button>
               
             </> :
-              <NavLink to="/"><Button className="nav-buttons" color="inherit" onClick={handleSignOut}>Sign Out</Button></NavLink>
+              <Button className="nav-buttons" color="inherit" onClick={handleSignOut}>Sign Out</Button>
             }
         </Toolbar>
       </AppBar>

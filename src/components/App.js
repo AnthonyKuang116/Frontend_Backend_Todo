@@ -5,15 +5,10 @@ import ".././css/index.css"
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [todos, setTodos] = useState([]);
-  const [userId, setUserId] = useState(0);
 
   useEffect(() => {
-    async function fetchTodos() {
-      const data = await getTodos(userId);
-      setTodos(data);
-    }
-  }, [userId]);
+
+  }, [loggedIn]);
 
   return (
     <div className="App">
@@ -21,8 +16,9 @@ const App = () => {
         <Header {...{ loggedIn, setLoggedIn }} />
         <Routes>
           <Route path="/" element={<Login {...{ loggedIn, setLoggedIn }} />} />
+          <Route path="login" element={<Login {...{ loggedIn, setLoggedIn }} />}/>
           <Route path="signup" element={<SignUp />} />
-          <Route path="todoList" element={<TodoList {...{ todos, setTodos }} />} />
+          <Route path="todoList" element={<TodoList />} />
         </Routes>
       </Router>
     </div>

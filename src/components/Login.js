@@ -10,8 +10,10 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from "react";
 import { login } from "../api/index"
+import { useNavigate } from "react-router-dom";
 
 const Login = ({setLoggedIn}) => {
+  const navigate = useNavigate();
   const theme = createTheme();
 
   const [userInput, setUserInput] = useState("");
@@ -38,6 +40,7 @@ const Login = ({setLoggedIn}) => {
       console.log("token", user.data.token)
       setToken(user.data.token);
       setLoggedIn(true)
+      navigate("/todoList")
     } catch (error) {
       console.log(error);
     }
@@ -84,6 +87,7 @@ const Login = ({setLoggedIn}) => {
               value={passwordInput}
               onChange={handlePassword}
             />
+            {/* <NavLink to="todoList"><Button className="nav-buttons" color="inherit" onClick={handleSignOut}>Sign Out</Button></NavLink> */}
             <Button
               type="submit"
               fullWidth

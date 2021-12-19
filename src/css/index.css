@@ -14,3 +14,10 @@
     border: none;
     font-weight: bold;
 }
+
+.add-todo-button-container {
+    display: flex;
+    width: 99%;
+    justify-content: right;
+    margin: 5px;
+}
