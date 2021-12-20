@@ -5,13 +5,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import Modal from "@material-ui/core/Modal";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
-
 import { updateTodo } from "../api/index"
 
 const EditTodoModal = ({ editTodoModal, setEditTodoModal, todos, setTodos, rowSelection }) => {
@@ -37,13 +36,13 @@ const EditTodoModal = ({ editTodoModal, setEditTodoModal, todos, setTodos, rowSe
 
     const classes = useStyles();
     const handleClose = () => {
-        setEditTodoModal(false)
+        setEditTodoModal(false);
     }
 
     const [content, setContent] = useState("");
     const [isCompleted, setIsCompleted] = useState(false);
-    const [to, setTo] = useState(new Date('2014-08-18T21:11:54')); //need to convert to date to isostring later
-    const [from, setFrom] = useState(new Date('2014-08-17T21:11:54')); //need to conver from date to isostring later
+    const [to, setTo] = useState(new Date('2014-08-18T21:11:54')); 
+    const [from, setFrom] = useState(new Date('2014-08-17T21:11:54'));
     const handleContent = (e) => { setContent(e.target.value) }
     const handleChecked = () => {
         isCompleted === true ? setIsCompleted(false) : setIsCompleted(true);
@@ -57,16 +56,11 @@ const EditTodoModal = ({ editTodoModal, setEditTodoModal, todos, setTodos, rowSe
 
     const handleUpdateTodo = async () => {
         try {
-            console.log("rowSelection",rowSelection)
-            console.log("from", from)
-            console.log("to", to)
-            console.log("conent", content)
-            console.log("complete", isCompleted)
-            const newTodo = await updateTodo({ rowSelection, from, to, content, isCompleted })
+            const newTodo = await updateTodo({ rowSelection, from, to, content, isCompleted });
 
             const newTodoList = [...todos, newTodo];
-            setTodos(newTodoList)
-            setEditTodoModal(false)
+            setTodos(newTodoList);
+            setEditTodoModal(false);
         } catch (error) {
             console.error(error);
         }

@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import Modal from "@material-ui/core/Modal";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -37,13 +37,13 @@ const AddTodoModal = ({ addTodoModal, setAddTodoModal, todos, setTodos }) => {
 
     const classes = useStyles();
     const handleClose = () => {
-        setAddTodoModal(false)
+        setAddTodoModal(false);
     }
 
     const [content, setContent] = useState("");
     const [isCompleted, setIsCompleted] = useState(false);
-    const [to, setTo] = useState(new Date('2014-08-18T21:11:54')); //need to convert to date to isostring later
-    const [from, setFrom] = useState(new Date('2014-08-17T21:11:54')); //need to conver from date to isostring later
+    const [to, setTo] = useState(new Date('2014-08-18T21:11:54'));
+    const [from, setFrom] = useState(new Date('2014-08-17T21:11:54'));
     const handleContent = (e) => { setContent(e.target.value) }
     const handleChecked = () => {
         isCompleted === true ? setIsCompleted(false) : setIsCompleted(true);
@@ -57,21 +57,15 @@ const AddTodoModal = ({ addTodoModal, setAddTodoModal, todos, setTodos }) => {
 
     const handleAddTodo = async () => {
         try {
-            const newTodo = await addTodo({ from, to, content, isCompleted })
+            const newTodo = await addTodo({ from, to, content, isCompleted });
             const newTodoList = [...todos, newTodo.data];
-            console.log(newTodoList)
-            setTodos(newTodoList)
-            setAddTodoModal(false)
+            console.log(newTodoList);
+            setTodos(newTodoList);
+            setAddTodoModal(false);
         } catch (error) {
             console.error(error);
         }
     }
-
-    // const handleCheckToDate = (e) => {
-    //     e.preventDefault();
-    //     console.log(toDate)
-    //     console.log(toDate.toISOString())
-    // }
 
     return (
         <Modal
@@ -106,7 +100,6 @@ const AddTodoModal = ({ addTodoModal, setAddTodoModal, todos, setTodos }) => {
                         <TextField id="addProductSub" label="Content" onChange={handleContent} />
                         <FormControlLabel control={<Checkbox checked={isCompleted} onChange={handleChecked} />} label="Todo Completed" />
                         <Button variant="contained" color="primary" onClick={handleAddTodo}>Add Todo</Button>
-                        {/* <button onClick={handleCheckToDate}>Check To Date</button> */}
                     </form>
                 </div>
             </Fade>

@@ -12,7 +12,7 @@ import { useState } from "react";
 import { login } from "../api/index"
 import { useNavigate } from "react-router-dom";
 
-const Login = ({setLoggedIn}) => {
+const Login = ({ setLoggedIn }) => {
   const navigate = useNavigate();
   const theme = createTheme();
 
@@ -23,7 +23,7 @@ const Login = ({setLoggedIn}) => {
     localStorage.setItem("token", token);
   }
   const setUser = (user) => {
-    localStorage.setItem("creator", user)
+    localStorage.setItem("creator", user);
   }
 
   const handleUsername = (e) => {
@@ -40,16 +40,16 @@ const Login = ({setLoggedIn}) => {
     e.preventDefault();
     try {
       const user = await login(userInput, passwordInput);
-      console.log("token", user.data.token)
-      console.log("userId", user.data.userId)
+      console.log("token", user.data.token);
+      console.log("userId", user.data.userId);
       setToken(user.data.token);
-      setUser(user.data.userId)
-      setLoggedIn(true)
-      navigate("/todoList")
+      setUser(user.data.userId);
+      setLoggedIn(true);
+      navigate("/todoList");
     } catch (error) {
+      alert("Incorret username or password!")
       console.log(error);
     }
-
   }
 
   return (

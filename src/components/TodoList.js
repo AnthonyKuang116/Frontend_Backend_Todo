@@ -25,14 +25,8 @@ const TodoList = () => {
             try {
                 const data = await getTodo();
                 let gridRows = data.result.map((todo) => Object.assign({ id: todo._id, from: todo.from, to: todo.to, content: todo.content, isCompleted: todo.isCompleted, creator: todo.creator }));
-
-                // gridRows.forEach(todo => {
-                //     todo.from = todo.from.substring(0,10)
-                //     todo.to = todo.to.substring(0,10)
-                // })
-                
-                setTodos(gridRows)
-                console.log("gridRows", gridRows)
+                setTodos(gridRows);
+                console.log("gridRows", gridRows);
             } catch (error) {
                 console.error(error);
             }
@@ -55,8 +49,8 @@ const TodoList = () => {
             (todo) => todo.id != rowSelection[0]
         )
 
-        deleteTodo(rowSelection)
-        setTodos(newTodos)
+        deleteTodo(rowSelection);
+        setTodos(newTodos);
     }
 
     const handleEditTodo = () => {

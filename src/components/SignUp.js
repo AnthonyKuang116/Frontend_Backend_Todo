@@ -35,13 +35,10 @@ const SignIn = () => {
     e.preventDefault();
     try {
       const user = await signup(userInput, passwordInput);
-      if(!user.token){
-        alert("Username already taken!")
-      }
-      // console.log(user)
       setToken(user.token);
-      alert("Sign up successful! Please log in!")
+      alert("Sign up successful! Please log in!");
     } catch (error) {
+      alert("Username is already taken!")
       console.error(error);
     }
   }

@@ -12,15 +12,15 @@ const Header = ({ loggedIn, setLoggedIn }) => {
   const handleSignOut = (e) => {
     e.preventDefault();
     setLoggedIn(false);
-    navigate("/")
+    navigate("/");
   }
 
   const handleLogin = () => {
-    navigate("/login")
+    navigate("/login");
   }
 
   const handleSignUp = () => {
-    navigate('/signup')
+    navigate('/signup');
   }
 
   return (
@@ -31,7 +31,6 @@ const Header = ({ loggedIn, setLoggedIn }) => {
             <>
               <Button color="inherit" onClick={handleLogin}>Login</Button>
               <Button className="nav-buttons" color="inherit" onClick={handleSignUp}>Sign Up</Button>
-              
             </> :
               <Button className="nav-buttons" color="inherit" onClick={handleSignOut}>Sign Out</Button>
             }
