@@ -1,5 +1,5 @@
 import axios from "axios";
-async function addTodo({ from, to, content, isCompleted }) {
+async function addTodo({ from, to, content, isCompleted}) {
     try {
         const token = localStorage.getItem('token');
         const { data } = await axios.post("http://localhost:4000/api/event", {

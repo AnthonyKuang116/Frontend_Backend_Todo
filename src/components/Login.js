@@ -22,6 +22,9 @@ const Login = ({setLoggedIn}) => {
   const setToken = (token) => {
     localStorage.setItem("token", token);
   }
+  const setUser = (user) => {
+    localStorage.setItem("creator", user)
+  }
 
   const handleUsername = (e) => {
     e.preventDefault();
@@ -38,7 +41,9 @@ const Login = ({setLoggedIn}) => {
     try {
       const user = await login(userInput, passwordInput);
       console.log("token", user.data.token)
+      console.log("userId", user.data.userId)
       setToken(user.data.token);
+      setUser(user.data.userId)
       setLoggedIn(true)
       navigate("/todoList")
     } catch (error) {
@@ -87,7 +92,6 @@ const Login = ({setLoggedIn}) => {
               value={passwordInput}
               onChange={handlePassword}
             />
-            {/* <NavLink to="todoList"><Button className="nav-buttons" color="inherit" onClick={handleSignOut}>Sign Out</Button></NavLink> */}
             <Button
               type="submit"
               fullWidth

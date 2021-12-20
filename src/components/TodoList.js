@@ -3,11 +3,7 @@ import { DataGrid } from '@material-ui/data-grid';
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { getTodo, deleteTodo } from "../api/index";
-import { AddTodoModal } from "./index";
-
-import Modal from '@mui/material/Modal';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import { AddTodoModal, EditTodoModal } from "./index";
 
 const TodoList = () => {
     const useStyles = makeStyles((theme) => ({
@@ -22,16 +18,19 @@ const TodoList = () => {
     const [todos, setTodos] = useState([]);
     const [addTodoModal, setAddTodoModal] = useState(false);
     const [editTodoModal, setEditTodoModal] = useState(false);
-    const [rowSelection, setRowSelection] = useState(0);
+    const [rowSelection, setRowSelection] = useState("");
 
-
-    // let gridRows = [{ id: 1, from: 1111, to: 2222, content: "testing", isCompleted: "false" }];
     useEffect(() => {
         async function fetchTodos() {
             try {
                 const data = await getTodo();
-                // setTodos(data);
-                let gridRows = data.result.map((todo) => Object.assign({ id: todo._id, from: todo.from, to: todo.to, content: todo.content, isCompleted: todo.isCompleted }));
+                let gridRows = data.result.map((todo) => Object.assign({ id: todo._id, from: todo.from, to: todo.to, content: todo.content, isCompleted: todo.isCompleted, creator: todo.creator }));
+
+                // gridRows.forEach(todo => {
+                //     todo.from = todo.from.substring(0,10)
+                //     todo.to = todo.to.substring(0,10)
+                // })
+                
                 setTodos(gridRows)
                 console.log("gridRows", gridRows)
             } catch (error) {
@@ -47,36 +46,31 @@ const TodoList = () => {
 
     const classes = useStyles();
 
-    const handleTodos = () => {
-        // const gridRows = todos.result.map((todo) => Object.assign({ from: todo.from, to: todo.to, content: todo.content, isCompleted: todo.isCompleted }));
-        // console.log(gridRows);
-
-        console.log(todos)
-    }
-
     const handleAddTodo = () => {
         setAddTodoModal(true);
     }
 
     const handleDeleteTodo = () => {
         const newTodos = [...todos].filter(
-            (todo) => todo.id != rowSelection.id
+            (todo) => todo.id != rowSelection[0]
         )
 
-        deleteTodo(rowSelection.id)
+        deleteTodo(rowSelection)
         setTodos(newTodos)
     }
-    const handleTest = () => {
-        console.log(rowSelection)
+
+    const handleEditTodo = () => {
+        setEditTodoModal(true);
     }
 
     let columns = [
-        { field: 'from', headerName: 'From', width: 350 },
-        { field: 'to', headerName: 'To', width: 350 },
+        // { field: 'from', headerName: 'From', width: 350 },
+        {field: 'from', headerName: 'From', width: 350, renderCell: (params) => (params.value.substring(0,10))},
+        {field: 'to', headerName: 'To', width: 350, renderCell: (params) => (params.value.substring(0,10))},
         { field: 'content', headerName: 'Content', width: 600 },
         { field: 'isCompleted', headerName: 'Completed', width: 150 },
-        { field: 'edit', headerName: 'Edit', width: 105, renderCell: () => (<Button variant="contained" color="primary" style={{ marginRight: "30px" }}>Edit</Button>) },
-        { field: 'delete', headerName: 'Delete', width: 120, renderCell: () => (<Button variant="contained" color="secondary" onClick={handleTest}>Delete</Button>) }
+        { field: 'edit', headerName: 'Edit', width: 105, renderCell: () => (<Button variant="contained" color="primary" onClick={handleEditTodo} style={{ marginRight: "30px" }}>Edit</Button>) },
+        { field: 'delete', headerName: 'Delete', width: 120, renderCell: () => (<Button variant="contained" color="secondary" onClick={handleDeleteTodo}>Delete</Button>) }
     ]
 
     return (
@@ -84,19 +78,17 @@ const TodoList = () => {
             <div className="add-todo-button-container">
                 <Button variant="contained" color="primary" onClick={handleAddTodo}>Add Todo</Button>
             </div>
-
-
             <DataGrid
                 className={classes.root}
                 rows={todos}
                 columns={columns}
                 pageSize={15}
-                // getRowId={row => setRowSelection(row.id)}
-                // onRowSelected={(row) => {setRowSelection(row.data)}
+                onSelectionModelChange={(newSelection) => {
+                    setRowSelection(newSelection) //grabs todo id
+                }}
             />
-            {addTodoModal === false ? null : <AddTodoModal {...{addTodoModal, setAddTodoModal}}/>}   
-            {editTodoModal === false ? null : <div class="edit-todo-modal"></div>}
-            <button onClick={handleTodos}>Check todos</button>
+            {addTodoModal === false ? null : <AddTodoModal {...{addTodoModal, setAddTodoModal, todos, setTodos}}/>}   
+            {editTodoModal === false ? null : <EditTodoModal {...{editTodoModal, setEditTodoModal, todos, setTodos, rowSelection}}/>}
         </div>
     )
 }

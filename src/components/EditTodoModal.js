@@ -12,9 +12,9 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 
-import { addTodo } from "../api/index"
+import { updateTodo } from "../api/index"
 
-const AddTodoModal = ({ addTodoModal, setAddTodoModal, todos, setTodos }) => {
+const EditTodoModal = ({ editTodoModal, setEditTodoModal, todos, setTodos, rowSelection }) => {
     const useStyles = makeStyles((theme) => ({
         root: {
             '& > *': {
@@ -37,7 +37,7 @@ const AddTodoModal = ({ addTodoModal, setAddTodoModal, todos, setTodos }) => {
 
     const classes = useStyles();
     const handleClose = () => {
-        setAddTodoModal(false)
+        setEditTodoModal(false)
     }
 
     const [content, setContent] = useState("");
@@ -55,28 +55,27 @@ const AddTodoModal = ({ addTodoModal, setAddTodoModal, todos, setTodos }) => {
         setFrom(newValue.toISOString());
     }
 
-    const handleAddTodo = async () => {
+    const handleUpdateTodo = async () => {
         try {
-            const newTodo = await addTodo({ from, to, content, isCompleted })
-            const newTodoList = [...todos, newTodo.data];
-            console.log(newTodoList)
+            console.log("rowSelection",rowSelection)
+            console.log("from", from)
+            console.log("to", to)
+            console.log("conent", content)
+            console.log("complete", isCompleted)
+            const newTodo = await updateTodo({ rowSelection, from, to, content, isCompleted })
+
+            const newTodoList = [...todos, newTodo];
             setTodos(newTodoList)
-            // setAddTodoModal(false) //closes modal
+            // setEditTodoModal(false) //closes modal
         } catch (error) {
             console.error(error);
         }
     }
 
-    // const handleCheckToDate = (e) => {
-    //     e.preventDefault();
-    //     console.log(toDate)
-    //     console.log(toDate.toISOString())
-    // }
-
     return (
         <Modal
             className={classes.modal}
-            open={addTodoModal}
+            open={editTodoModal}
             onClose={handleClose}
             closeAfterTransition
             BackdropComponent={Backdrop}
@@ -84,11 +83,11 @@ const AddTodoModal = ({ addTodoModal, setAddTodoModal, todos, setTodos }) => {
                 timeout: 500,
             }}
         >
-            <Fade in={addTodoModal}>
+            <Fade in={editTodoModal}>
                 <div className={classes.paper} style={{ height: 550, width: 300 }}>
                     <form className={classes.root} noValidate autoComplete="off"
                         style={{ height: 500, width: '100%', display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-                        <h2 style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>Add Todo</h2>
+                        <h2 style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>Edit Todo</h2>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DateTimePicker
                                 label="From"
@@ -105,8 +104,7 @@ const AddTodoModal = ({ addTodoModal, setAddTodoModal, todos, setTodos }) => {
                         </LocalizationProvider >
                         <TextField id="addProductSub" label="Content" onChange={handleContent} />
                         <FormControlLabel control={<Checkbox checked={isCompleted} onChange={handleChecked} />} label="Todo Completed" />
-                        <Button variant="contained" color="primary" onClick={handleAddTodo}>Add Todo</Button>
-                        {/* <button onClick={handleCheckToDate}>Check To Date</button> */}
+                        <Button variant="contained" color="primary" onClick={handleUpdateTodo}>Edit Todo</Button>
                     </form>
                 </div>
             </Fade>
@@ -114,4 +112,4 @@ const AddTodoModal = ({ addTodoModal, setAddTodoModal, todos, setTodos }) => {
     )
 }
 
-export default AddTodoModal;
+export default EditTodoModal;

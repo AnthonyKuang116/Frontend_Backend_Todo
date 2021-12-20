@@ -1,8 +1,10 @@
 import axios from "axios";
-async function updateTodo(id, from, to, content, creator) {
+async function updateTodo({rowSelection, from, to, content, isCompleted}) {
+  const token = localStorage.getItem('token');
+  const creator = localStorage.getItem('creator')
   try {
-    const { data } = await axios.put(`http://localhost:4000/api/event/${id}`, {from, to, content, creator});
-    return data;
+    await axios.put(`http://localhost:4000/api/event/${rowSelection[0]}`, {from, to, content, isCompleted, creator}, {headers: {'Authorization': `Bearer ${token}`}});
+    return {from: from.toISOString(), to: to.toISOString(), content, isCompleted, id: rowSelection[0]};
   } catch (error) {
     console.error("Could not update todo!", error);
     throw error;
