@@ -61,7 +61,7 @@ const AddTodoModal = ({ addTodoModal, setAddTodoModal, todos, setTodos }) => {
             const newTodoList = [...todos, newTodo.data];
             console.log(newTodoList)
             setTodos(newTodoList)
-            // setAddTodoModal(false) //closes modal
+            setAddTodoModal(false)
         } catch (error) {
             console.error(error);
         }

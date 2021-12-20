@@ -66,7 +66,7 @@ const EditTodoModal = ({ editTodoModal, setEditTodoModal, todos, setTodos, rowSe
 
             const newTodoList = [...todos, newTodo];
             setTodos(newTodoList)
-            // setEditTodoModal(false) //closes modal
+            setEditTodoModal(false)
         } catch (error) {
             console.error(error);
         }
