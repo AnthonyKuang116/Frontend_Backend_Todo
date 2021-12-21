@@ -11,8 +11,11 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from "react";
 import { login } from "../api/index"
 import { useNavigate } from "react-router-dom";
+import { bindActionCreators } from "redux";
+import { actionCreators } from "../redux/index";
+import { useDispatch } from 'react-redux';
 
-const Login = ({ setLoggedIn }) => {
+const Login = () => {
   const navigate = useNavigate();
   const theme = createTheme();
 
@@ -36,6 +39,9 @@ const Login = ({ setLoggedIn }) => {
     setPasswordInput(e.target.value);
   }
 
+  const dispatch = useDispatch();
+  const { setLoggedInTrue } = bindActionCreators(actionCreators, dispatch);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -44,7 +50,7 @@ const Login = ({ setLoggedIn }) => {
       console.log("userId", user.data.userId);
       setToken(user.data.token);
       setUser(user.data.userId);
-      setLoggedIn(true);
+      setLoggedInTrue();
       navigate("/todoList");
     } catch (error) {
       alert("Incorret username or password!")
